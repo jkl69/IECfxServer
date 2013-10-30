@@ -1,23 +1,16 @@
 package jkl.iec.tc.fx.gui;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 
-import tabledemo.TableDemo;
-
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Slider;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import jkl.iec.tc.bean.type.IECTCItem;
 import jkl.iec.tc.bean.type.IECTCObject;
-import jkl.iec.tc.fx.gui.IECCellFactory.IECvalueProperty;
+import jkl.iec.tc.fx.gui.IECObjectCellFactory.IECvalueProperty;
 
 public class IECstage extends Stage {
 	IECTCObject iob;

@@ -1,5 +1,7 @@
 package jkl.iec.tc.fx.gui;
 
+import java.util.Date;
+
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.event.EventHandler;
@@ -9,26 +11,20 @@ import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 import jkl.iec.tc.bean.type.IECTCItem;
 import jkl.iec.tc.bean.type.IECTCObject;
-import jkl.iec.tc.fx.gui.IECCellFactory.IECvalueProperty;
+import jkl.iec.tc.fx.gui.IECObjectCellFactory.IECvalueProperty;
    
 
 class IECVcell extends TableCell<IECTCItem, IECTCObject> {
 //class IECVcell extends TableCell<IECTCItem, Double> {
 		
 	IECvalueProperty iecval = null;
-/*	
-	IECVcell(){
-		this.iecval = (IECvalueProperty) getTableColumn().getUserData();
-	}
-*/	
+
 	private IECTCObject oldiob;
 	private InvalidationListener listener =null;
 	 
     public void updateItem(final IECTCObject item, boolean empty) {     
         super.updateItem(item, empty);
         iecval = (IECvalueProperty) getTableColumn().getUserData();
-//        System.out.println("ColumnObject:"+iecval);
-//        textProperty().unbind();
         if(oldiob != null) {
            oldiob.ValProperty().removeListener(listener);
            oldiob = null;
@@ -37,22 +33,15 @@ class IECVcell extends TableCell<IECTCItem, IECTCObject> {
         if (! empty) {
         	listener = new InvalidationListener() {
                 public void invalidated(Observable o) {
- //                   System.out.println("Invalid Object:"+o);
                 	if (iecval == IECvalueProperty.value){
                     	setText(item.getValueasString());
                     }
                     if (iecval == IECvalueProperty.qu){
                     	setText(getItem().getQUasString());
-//                    	setText(String.valueOf(getItem().getQU()));
                     }                	
-//                    setText(String.valueOf(item.getVal()));
                 }
               };
 
-//    		setText(getItem().getValueasString());
-//         	textProperty().bind(item.ValProperty().asString());
-
-//            item.ValProperty().addListener(listener);  
             if (iecval == IECvalueProperty.value){
                 item.ValProperty().addListener(listener);  
                 setText(getItem().getValueasString());
@@ -69,7 +58,19 @@ class IECVcell extends TableCell<IECTCItem, IECTCObject> {
     }
 }
 
-public class IECCellFactory implements Callback<TableColumn<IECTCItem, IECTCObject>, TableCell<IECTCItem, IECTCObject>>{
+class IECTcell extends TableCell<IECTCItem, Date> {
+	    public void updateItem(final Date item, boolean empty) {     
+	        super.updateItem(item, empty);
+	        if (! empty) {
+	           	setText(getItem().toLocaleString());
+	       	}else {
+	            setText(null);
+	      	}
+	        setGraphic(null);
+	    }
+	}
+
+public class IECObjectCellFactory implements Callback<TableColumn<IECTCItem, IECTCObject>, TableCell<IECTCItem, IECTCObject>>{
 
 	public enum IECvalueProperty {value,qu,time,sim}
 
@@ -92,7 +93,6 @@ public class IECCellFactory implements Callback<TableColumn<IECTCItem, IECTCObje
                     IECstage iecDialog = new IECstage(o,iecval);
                     iecDialog.show();               	
                 }
-
             }
         }
       });

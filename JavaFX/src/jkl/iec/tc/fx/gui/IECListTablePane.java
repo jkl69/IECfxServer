@@ -27,7 +27,7 @@ import jkl.iec.tc.bean.type.IECItemList;
 import jkl.iec.tc.bean.type.IECTCItem;
 import jkl.iec.tc.bean.type.IECTCObject;
 import jkl.iec.tc.bean.utils.IECSimulatorThread;
-import jkl.iec.tc.fx.gui.IECCellFactory.IECvalueProperty;
+import jkl.iec.tc.fx.gui.IECObjectCellFactory.IECvalueProperty;
 
 //public class IECListTablePane extends StackPane{
 public class IECListTablePane extends TableView<IECTCItem> {
@@ -115,7 +115,7 @@ public class IECListTablePane extends TableView<IECTCItem> {
 	private final TableColumn<IECTCItem, Boolean>  simcheckcol = new TableColumn<>("Sim");
 	private final TableColumn<IECTCItem, Boolean>  simvalcol = new TableColumn<>("SimParam");
 	
-	private IECCellFactory iecCellFactory = new IECCellFactory();
+	private IECObjectCellFactory iecCellFactory = new IECObjectCellFactory();
 	
 	public IECListTablePane() {
 		setItems(itemlist);
@@ -244,8 +244,15 @@ public class IECListTablePane extends TableView<IECTCItem> {
 		
 		valCol.setUserData(IECvalueProperty.value);
 	   	valCol.setCellFactory(iecCellFactory);	
-		quCol.setUserData(IECvalueProperty.qu);
+	   	quCol.setUserData(IECvalueProperty.qu);
 		quCol.setCellFactory(iecCellFactory);
+		timeCol.setUserData(IECvalueProperty.time);
+		timeCol.setCellFactory(new Callback<TableColumn<IECTCItem, Date>, TableCell<IECTCItem, Date>>() {
+			@Override
+			public TableCell<IECTCItem, Date> call(final TableColumn<IECTCItem, Date> col) {
+				final TableCell<IECTCItem, Date> cell = new IECTcell();
+				return cell;
+			}});
 		
 	   	actionCol.setCellFactory(new Callback<TableColumn<IECTCItem, Boolean>, TableCell<IECTCItem, Boolean>>() {
             @Override
