@@ -9,7 +9,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import jkl.iec.tc.bean.type.IECMap;
-import jkl.iec.tc.bean.type.IECOList;
+import jkl.iec.tc.bean.type.IECItemList;
 import jkl.iec.tc.bean.type.IECTCItem;
 import jkl.iec.tc.bean.type.IECMap.IECTyp;
 
@@ -20,7 +20,7 @@ public class IECSimPlayer {
 	private BufferedReader br;
 	private FileReader fr ;
 	
-	private IECOList ieclist =null; 
+	private IECItemList ieclist =null; 
 	
 	class player extends TimerTask {
 //		Properties p;
@@ -156,11 +156,11 @@ public class IECSimPlayer {
 		}
   }
 
-	public IECOList getIeclist() {
+	public IECItemList getIeclist() {
 		return ieclist;
 	}
 
-	public void setIeclist(IECOList ieclist) {
+	public void setIeclist(IECItemList ieclist) {
 		this.ieclist = ieclist;
 	}
 }

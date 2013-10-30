@@ -82,6 +82,13 @@ public class IECTCItem {
 		return ASDU.get();
 	}
 
+	private SimpleIntegerProperty COT = new SimpleIntegerProperty();
+	public SimpleIntegerProperty COTProperty() {return COT; }
+	
+	public int getCOT() {
+		return COT.get();
+	}
+
 
 	byte[] Stream = new byte[250];
 	int StreamLength;
@@ -191,7 +198,8 @@ public class IECTCItem {
 //		Stream = b_long;
 		StreamLength= length;
 		readASDU();
-//		og(Level level, String msg, Object[] params) 
+		readCOT();
+		
 		IECTCObject o = getIOB(0);
 		o.buf = Arrays.copyOfRange(b,index, b.length);  // copy rest of stream 
 		if (getIectyp() != IECTyp.IEC_NULL_TYPE) {
@@ -337,17 +345,20 @@ public class IECTCItem {
     	if (cot < 1) {
 			cot = 1;
 		}
+    	log.finer(String.valueOf(cot));
+    	COT.set(cot);
     	Stream[2] =	(byte) (cot % 256);
 		Stream[3] = (byte) (cot / 256);	
 	}
-	public int getCOT() {
+	/*
+	public int getoCOT() {
 		if (P_SHORT) {
 			return  (Stream[2] & 0xFF);       	
 		} else {
 			return  ((Stream[3] & 0xFF) << 8) | (Stream[2] & 0xFF);   	
 		}
 	}
-	
+	*/
 	public void setASDU(int asdu) {
     	if (asdu > 65535) {
 			asdu = 65535;
@@ -383,6 +394,13 @@ public class IECTCItem {
 		log.finest("Stream-ASDU: "+getASDU());
 	}
 	
+	private void readCOT() {
+		int cot;
+		if (P_SHORT) {cot =  (Stream[2] & 0xFF);       	
+		} else {cot =  ((Stream[3] & 0xFF) << 8) | (Stream[2] & 0xFF);   	
+		}
+		setCOT(cot);
+	}
 	/**
 	 * Return an Byte buffer that contains an ready to send Stream of this object
 	 */

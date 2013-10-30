@@ -23,7 +23,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.Callback;
 import javafx.util.converter.IntegerStringConverter;
-import jkl.iec.tc.bean.type.IECOList;
+import jkl.iec.tc.bean.type.IECItemList;
 import jkl.iec.tc.bean.type.IECTCItem;
 import jkl.iec.tc.bean.type.IECTCObject;
 import jkl.iec.tc.bean.utils.IECSimulatorThread;
@@ -34,7 +34,7 @@ public class IECListTablePane extends TableView<IECTCItem> {
 	 
 	public final static Logger log = Logger.getLogger(IECListTablePane.class .getName()); 
 	
-	public final IECOList itemlist = new IECOList();
+	public final IECItemList itemlist = new IECItemList();
 	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 	
 	private IECSimulatorThread iecsimulator; 

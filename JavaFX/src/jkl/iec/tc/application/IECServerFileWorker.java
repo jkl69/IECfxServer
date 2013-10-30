@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.net.URL;
@@ -23,7 +24,7 @@ import jkl.iec.tc.bean.utils.IECSimProperties;
 public class IECServerFileWorker {
 	
 	BufferedWriter bw ;
-
+	
 	public Properties getVersionProperties(){
 		Properties result= new Properties();
 	    URL url = Server.class.getResource(Server.VersionFile); 
@@ -92,6 +93,7 @@ public class IECServerFileWorker {
 	public boolean save() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save Itemlist");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")+"/Documents/"));
         File file = fileChooser.showSaveDialog(Server.stage);
         System.out.println("file:"+file);
         if (file != null) {
@@ -101,7 +103,7 @@ public class IECServerFileWorker {
 			txt="FILE.VERSION=2";
 			write(txt);
 			txt ="ITEMS.COUNT="+Server.iecPane.itemlist.size();
-	 		
+			write(txt);	 		
 			int props = IECTCItem.Props.length +IECSimProperties.Props.length;
 			String[] result = new String[props];
 			System.arraycopy(IECTCItem.Props,0,result,0,IECTCItem.Props.length);
@@ -126,6 +128,7 @@ public class IECServerFileWorker {
 	}
 	
 	private void loadItem(List<String> keyList,String[] values) {
+		System.out.println("LOAD ITEM");
 		Properties props = new Properties();
 		int index = 0;
 		for (String key:keyList) {
@@ -142,9 +145,9 @@ public class IECServerFileWorker {
 		System.out.println("LOAD Items");
 		int c= Integer.parseInt(p.getProperty("ITEMS.COUNT","0"));
 		List<String> KeyList = Arrays.asList(p.getProperty("ITEM.PROPERTIES").split(";")); 
-		System.out.println("ITEM PROBETIES IN FILE "+KeyList);
+		System.out.println(c+"ITEM PROBETIES IN FILE "+KeyList);
 		String pre = "ITEM";
-		for (int it=1;it<c;it++) {
+		for (int it=1;it==c;it++) {
 			String[] values= p.getProperty(pre+it).split(";");
 			loadItem(KeyList,values);
 		}
@@ -153,6 +156,7 @@ public class IECServerFileWorker {
 	public boolean load() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Load Itemlist");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")+"/Documents/"));
         File file = fileChooser.showOpenDialog(Server.stage);
         System.out.println("LOAD file:"+file);
         if (file != null) {        

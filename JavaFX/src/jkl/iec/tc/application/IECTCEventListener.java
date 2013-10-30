@@ -2,6 +2,8 @@ package jkl.iec.tc.application;
 
 import java.awt.event.ActionEvent;
 
+import javafx.application.Platform;
+
 import jkl.iec.net.sockets.IECSocket;
 import jkl.iec.net.sockets.IIECnetActionListener;
 import jkl.iec.net.sockets.IECServer.IECServerAction;
@@ -33,6 +35,22 @@ public class IECTCEventListener implements IIECTCStreamListener,IIECnetActionLis
 			}		
 	}
 
+	class TTk implements Runnable {
+		IECTCItem litem;
+		IECTCItem item;
+		TTk (IECTCItem li ,IECTCItem i) {
+			this.litem = li;
+			this.item = i;
+		}
+		@Override
+		public void run() {
+			litem.getObject0().setVal(item.getObject0().getVal());		
+			litem.setCOT(6);		
+//			litem.setCOT(item.getCOT());		
+		}
+		
+	};
+	
 	@Override
 	public void onReceive(IECSocket sender, byte[] b, int len) {
 		System.out.println("IECTCStreamListener:onReceive");
@@ -52,8 +70,11 @@ public class IECTCEventListener implements IIECTCStreamListener,IIECnetActionLis
 			IECTCItem listitem = Server.iecPane.itemlist.getIECItem(i.getIectyp(),i.getASDU(),i.getObject0().getaddr());
 	 		if (listitem != null) {
 				System.out.println("ITEM IN LIST --> actcon");
-				i.setCOT(0x47);
-				doStream(i);				
+
+				Platform.runLater(new TTk(listitem,i) );
+	            
+//				i.setCOT(0x07);
+//				doStream(i);				
 			} else {  //Item not in List
 				System.out.println("ITEM NOT IN LIST --> nactcon");
 				i.setCOT(0x47);
@@ -61,7 +82,7 @@ public class IECTCEventListener implements IIECTCStreamListener,IIECnetActionLis
 		    }
    		return;
    	 	}
-		 System.out.println("COT NOT 6 nothing to do! ");
+		 System.out.println("COT NOT 6 nothing to do! "+i.getCOT());
 	}
 
 }

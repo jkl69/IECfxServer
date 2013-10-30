@@ -331,7 +331,7 @@ public class IECTCObject implements Cloneable {
 		if (v != getVal()) {
 //			Val = v;
 			Val.set(v);
-			System.out.println("setValue(newValue : "+v+")");
+			log.finer(String.valueOf(v));
 			setTime( new Date());
 			return true;
 		}

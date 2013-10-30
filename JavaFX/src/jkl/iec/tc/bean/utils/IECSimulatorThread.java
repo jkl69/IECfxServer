@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.logging.Logger;
 
 import jkl.iec.tc.bean.type.IECMap;
-import jkl.iec.tc.bean.type.IECOList;
+import jkl.iec.tc.bean.type.IECItemList;
 import jkl.iec.tc.bean.type.IECTCItem;
 import jkl.iec.tc.bean.utils.IECSimProperties.SimtimeProperty;
 
@@ -14,7 +14,7 @@ public class IECSimulatorThread implements Runnable {
 	public final static Logger log = Logger.getLogger(IECSimulatorThread.class .getName()); 
 	
 	IECSimProperties simprop=null;
-	IECOList ieclist=null;
+	IECItemList ieclist=null;
 	
     public void run() {
 		log.finest("Simulator cycel Started ");
@@ -102,7 +102,7 @@ public class IECSimulatorThread implements Runnable {
    		simprop.NextSimTime = now.getTime() + r;
 	    }
 
-	public IECSimulatorThread(IECOList l) {
+	public IECSimulatorThread(IECItemList l) {
 		this.ieclist = l; 
 	 }
 	
