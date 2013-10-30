@@ -81,9 +81,9 @@ public class IECMEstageController extends IECstageController {
 			public void changed(ObservableValue<? extends String> arg0,	String arg1, String arg2) {
 				try {
 					Integer.parseInt(arg2);
-					valueText.setStyle("-fx-background-color: white;");
+					valueText.setStyle("-fx-background-color: -fx-focus-color, -fx-text-box-border, white;");
 				} catch (Exception e) {
-					valueText.setStyle("-fx-background-color: yellow;");
+					valueText.setStyle("-fx-background-color: -fx-focus-color, -fx-text-box-border , yellow;");
 				}
 			}
         });

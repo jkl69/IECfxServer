@@ -16,11 +16,12 @@
     <HBox id="p1" fx:id="controllPanel" alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="227.0" spacing="5.0">
       <children>
         <Button mnemonicParsing="false" onAction="#addButtonAction" text="Add Item" />
-        <Button mnemonicParsing="false" text="Clear List" />
+        <Button mnemonicParsing="false" onAction="#clearButtonAction" text="Clear List" />
         <Separator prefWidth="50.0" visible="false" />
-        <Button mnemonicParsing="false" onAction="#startButtonAction" text="Start Server" />
+        <Button fx:id="ServerStartButton" mnemonicParsing="false" onAction="#startButtonAction" text="Start Server" />
+        <Label text="PortNo." />
         <TextField fx:id="ServerPortText" prefWidth="91.0" text="2404" />
-        <Button mnemonicParsing="false" onAction="#stopButtonAction" text="Stop Server" />
+        <Button fx:id="ServerStopButton" disable="true" mnemonicParsing="false" onAction="#stopButtonAction" text="Stop Server" />
         <Separator prefWidth="60.0" visible="false" />
         <Button mnemonicParsing="false" onAction="#saveButtonAction" text="Save" />
         <Button mnemonicParsing="false" onAction="#loadButtonAction" text="Load" />
