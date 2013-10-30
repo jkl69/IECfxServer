@@ -130,7 +130,10 @@ public class IECListTablePane extends TableView<IECTCItem> {
 	
 	private void setColwidth() {
 		typeCol.setPrefWidth(200);		
+		ASDUCol.setPrefWidth(50);
 		COTCol.setPrefWidth(50);
+		timeCol.setPrefWidth(120);
+		actionCol.setPrefWidth(60);
 		simcheckcol.setPrefWidth(30);
 		}
 	
