@@ -1,16 +1,23 @@
 package jkl.iec.tc.application;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Enumeration;
 import java.util.Properties;
 
+import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -18,6 +25,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.util.Callback;
 import jkl.iec.net.sockets.IECServer;
 import jkl.iec.net.sockets.IECSocket;
 import jkl.iec.net.sockets.IECSocket.IECSocketStatus;
@@ -39,7 +47,7 @@ public class IECServerStageController {
     @FXML private Button   ServerStartButton;
     @FXML private Button   ServerStopButton;
     
-    public static class VersionData {
+    public class VersionData {
 	    private final SimpleStringProperty key;
 	    private final SimpleStringProperty value;
 	 
@@ -64,7 +72,47 @@ public class IECServerStageController {
 	}
 	
     private final ObservableList<VersionData> versiondata =FXCollections.observableArrayList();
-                
+    
+    public class AboutTableCellFactory<VersionData, String> implements Callback<TableColumn<VersionData, String>, TableCell<VersionData, String>> {
+
+        public AboutTableCellFactory() {
+        }
+
+        @Override
+        public TableCell<VersionData, String> call(TableColumn<VersionData, String> p) {
+            TableCell<VersionData, String> cell = new TableCell<VersionData, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem( item, empty);
+                    if( item != null ) {
+                        if (((java.lang.String) item).startsWith("http")) {
+                            final Hyperlink link = new Hyperlink();
+                            link.setText(item.toString());
+                            link.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent e) {
+                                    System.out.println("link :"+link.getText());
+                                    try {
+                                    	java.awt.Desktop.getDesktop().browse(new URI(link.getText()));
+									} catch (Exception ex) {
+										ex.printStackTrace();
+									} 
+                                }
+                            });
+                        	setText(null);
+                        	setGraphic(link);
+                        } else {
+                            setText( item.toString() );
+                       }
+                    } else {
+                        setText( "" );
+                    }
+                }
+            };
+            return cell;
+        }
+    }
+    
     @FXML void addButtonAction(ActionEvent event) {
     	System.out.println(event);
     	IECTCItem it=new IECTCItem(IECMap.getType(Server.ieccombobox.getValue()));
@@ -128,15 +176,6 @@ public class IECServerStageController {
 			public void changed(ObservableValue<? extends String> arg0,	String arg1, String arg2) {
 				try {
 					Integer.parseInt(arg2);
-					/*					ServerPortText.setStyle("-fx-background-color: red ,-fx-text-box-border ,white  ;" +
-							"-fx-skin: \"com.sun.javafx.scene.control.skin.TextFieldSkin\";"+
-//						    "-fx-background-color: -fx-shadow-highlight-color, -fx-text-box-border, -fx-control-inner-background;"+
-						    "-fx-background-insets: 0, 1, 2;"+
-						    "-fx-background-radius: 3, 2, 2;"+
-						    "-fx-padding: 3 5 3 5;"+
-						    "-fx-text-fill: -fx-text-inner-color;"+
-						    "-fx-prompt-text-fill: derive(-fx-control-inner-background,-30%);"+
-						    "-fx-cursor: text;");*/
 					ServerPortText.setStyle("-fx-fx-background-color: -fx-focus-color, -fx-text-box-border, -fx-control-inner-background; "+
 				    	"-fx-background-insets: -0.4, 1, 2;"+
 				    	"-fx-background-radius: 3.4, 2, 2;"+
@@ -159,7 +198,7 @@ public class IECServerStageController {
     	InfoTable.setItems(versiondata);
     	initVersionData(Server.VersionProperties);
     	Server.loghandler.textArea = LogArea;
-
+    	InfoTable.getColumns().get(1).setCellFactory(new AboutTableCellFactory());
 		}
 
 }
