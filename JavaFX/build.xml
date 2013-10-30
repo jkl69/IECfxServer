@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="IECServer" default="run" basedir="."> 
+
+	<property name="src.dir" location="src" />
+	<property name="build.dir" location="bin" />
+	<property name="docs.dir" location="doc" />
+	<property name="dist.dir" value="Dist" />
+
+	
+	<!-- inc major -->
+			<target name="incMajor">
+				<buildnumber file="version.properties"/>
+				<propertyfile
+				    file="version.properties"
+				    comment="My properties">
+				  <entry  key="Version.major" type="int" default="0" operation="+" />
+					<entry  key="Version.minor" type="int" value="0" />
+					<entry  key="Version.patch" type="int" value="0" />
+				</propertyfile>
+				<antcall target="build"/>
+			</target>
+	
+	<!-- inc minor -->
+			<target name="incMinor">
+				<buildnumber file="version.properties"/>
+				<propertyfile
+				    file="version.properties"
+				    comment="My properties">
+				  <entry  key="Version.minor" type="int" default="0" operation="+" />
+					<entry  key="Version.patch" type="int" value="0" />
+				</propertyfile>
+				<antcall target="build"/>
+			</target>
+	
+	<!-- inc patch -->
+			<target name="incPatch">
+				<buildnumber file="version.properties"/>
+				<propertyfile
+				    file="version.properties"
+				    comment="My properties">
+				  <entry  key="Version.patch" type="int" default="0" operation="+" />
+				</propertyfile>
+				<antcall target="build"/>
+			</target>
+		
+<!-- inc build -->
+		<target name="build">
+			<property file="version.properties"/>
+			<echo>Version.major:${Version.major}</echo>
+			<echo>Version.minor:${Version.minor}</echo>
+			<echo>Version.patch:${Version.patch}</echo>
+			<property name="newVersion" >${Version.major}.${Version.minor}.${Version.patch}-${build.number}</property>
+			<echo>Version: ${newVersion}</echo>
+			
+			<buildnumber file="version.properties"/>
+
+			<propertyfile file="version.properties"
+			    comment="IEC Server properties PLS. change any Version info only with ANT Tasks">
+			  <entry  key="Version" value="${newVersion}" />
+			  <entry  key="build.date" type="date" value="now" pattern="dd.MM.yy" />
+			  <entry  key="build.timestamp" type="date" value="now" pattern="yyyyMMddHHmmss"/>
+			</propertyfile>
+			<antcall target="ser"/>
+		</target>
+	
+<!-- Creates an .jar file -->
+ 	<target name="jar" depends="build" >
+    	<jar destfile="${dist.dir}/${ant.project.name}.jar"  >
+    	    <fileset dir="${build.dir}/"
+    	    />
+    	    <fileset dir="../IEC.net/bin/"
+    	    />
+            <manifest>
+                <attribute name="Main-Class" value="jkl.iec.net.applications.Server"/>
+                <attribute name="Version" value="${newVersion}"/>
+                <attribute name="Build" value="${build.timestamp}"/>
+                <attribute name="Project" value="${Project}"/>
+            </manifest>
+    	</jar> 
+ 	   <echo>${basedir}</echo>
+    </target>
+
+<!-- run create .ser file -->
+	   <target name="ser" >
+	       <java jar="lib/P2F.jar" fork="true">
+	       	<arg value="version.properties"/>
+	       	<arg value="src/jkl/iec/tc/application/Images/version.ser"/>
+	       	</java>
+	    <copy file="src/jkl/iec/tc/application/Images/version.ser" todir="jkl/bin/iec/net/applications/Images/"/>
+	   </target>
+	
+<!-- run the .jar file -->
+   <target name="run" >
+      <java jar="${dist.dir}/${ant.project.name}.jar" fork="true"/>
+	</target>
+	
+</project>
+	
