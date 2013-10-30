@@ -8,10 +8,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -273,13 +271,12 @@ public class IECTCItem {
 	public void setIectyp(IECTyp t) {
 		log.fine(t.toString());
 		Stream[0] = t.tk();	
-//		IECTCObject ob;
-		for (int it=0;it<IOB.size();it++) {
-				IOB.get(it).setDefLimits();   //Reset The Limits
-				IOB.get(it).setQU((byte) 0);  //Reset The Quality
+		for (IECTCObject ob : IOB) {
+				ob.iectyp=t;
+				ob.setDefLimits();   //Reset The Limits
+				ob.setQU((byte) 0);  //Reset The Quality
 		}
 //		System.out.println("IOBCount :"+IOB.size());		
-//		StreamLength =6+ IOB.get(0).getBufLength();
 		iectyp.set(t);
 		setIecname(IECMap.getTypeDescription(t));
 		if (IECMap.getTypeDescription(t) != iecname.get()) {setIecname(IECMap.getTypeDescription(t));}
@@ -291,7 +288,7 @@ public class IECTCItem {
 		}
 	}
 	
-	private void readType() {
+	public void readType() {
 		setIectyp(IECMap.getType(Stream[0]) );
 		if (getIectyp() == IECTyp.IEC_NULL_TYPE) {
 			log.warning("Stream-Type: "+iectyp);
@@ -474,7 +471,7 @@ public class IECTCItem {
 		}
 	}
 
-	private String getProperty(int index) {
+	public String getProperty(int index) {
 		if (index < Props.length) {
 			return getProperty(Props[index]);
 			}

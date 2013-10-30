@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -31,7 +32,9 @@ import jkl.iec.tc.fx.gui.IECCellFactory.IECvalueProperty;
 //public class IECListTablePane extends StackPane{
 public class IECListTablePane extends TableView<IECTCItem> {
 	 
-    public final IECOList itemlist = new IECOList();
+	public final static Logger log = Logger.getLogger(IECListTablePane.class .getName()); 
+	
+	public final IECOList itemlist = new IECOList();
 	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 	
 	private IECSimulatorThread iecsimulator; 

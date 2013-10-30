@@ -81,10 +81,11 @@ public class IECCellFactory implements Callback<TableColumn<IECTCItem, IECTCObje
           @Override
           public void handle(MouseEvent event) {
             if (event.getClickCount() > 0) {
-//            	System.out.println(col.getUserData());
             	IECvalueProperty iecval = (IECvalueProperty) cell.getTableColumn().getUserData();
             	IECTCObject o = (IECTCObject) cell.itemProperty().getValue();
-			    TableCell<IECTCItem, IECTCObject> c = (TableCell<IECTCItem, IECTCObject>) event.getSource();
+            	IECListTablePane.log.info("iecval"+iecval+"  "+o.item.getIectyp());
+            	System.out.println("o.ityp"+o.iectyp);
+            	TableCell<IECTCItem, IECTCObject> c = (TableCell<IECTCItem, IECTCObject>) event.getSource();
                 System.out.println("Cell text: " + c.getText());
 //                if (o != null) {
                 if ((o != null )&&(o.item.isM_typ())) {

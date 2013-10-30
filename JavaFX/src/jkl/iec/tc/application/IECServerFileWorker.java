@@ -46,9 +46,8 @@ public class IECServerFileWorker {
 				finally { try { fis.close(); }
 							catch ( Exception e ) { } 
 						}		
-	    		
-			f.delete();
 			result.list(System.out);
+			f.delete();
 		}
 		return result;
 	}

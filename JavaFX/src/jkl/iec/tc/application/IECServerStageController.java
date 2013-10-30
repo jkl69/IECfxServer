@@ -4,6 +4,8 @@ import java.util.Enumeration;
 import java.util.Properties;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -32,6 +34,7 @@ public class IECServerStageController {
     @FXML private TextField ServerPortText;
     @FXML private TextArea LogArea;
     @FXML private TableView<IECSocket> ClientList;
+    @FXML private TableView<VersionData> InfoTable;
 	
     public static class VersionData {
 	    private final SimpleStringProperty key;
@@ -57,8 +60,6 @@ public class IECServerStageController {
 	    }
 	}
 	
-    @FXML private TableView<VersionData> InfoTable;
-
     private final ObservableList<VersionData> versiondata =FXCollections.observableArrayList();
                 
     @FXML void addButtonAction(ActionEvent event) {
@@ -73,21 +74,18 @@ public class IECServerStageController {
     	Server.iecserver = new IECServer();
     	Server.iecserver.setIECServerListener(Server.listener);
 		Server.iecserver.setLoghandler(Server.loghandler);
+		Server.iecserver.IECPort = Integer.parseInt(ServerPortText.getText());
+		
 		ClientList.setItems(Server.iecserver.clients);
-		TableColumn<IECSocket,String> tc;
-		tc = (TableColumn<IECSocket, String>) ClientList.getColumns().get(0);
-		tc.setCellValueFactory( new PropertyValueFactory<IECSocket,String>("Idx"));
-		tc = (TableColumn<IECSocket, String>) ClientList.getColumns().get(1);
-		tc.setCellValueFactory( new PropertyValueFactory<IECSocket,String>("RemoteAddress"));		
-		TableColumn<IECSocket,IECSocketStatus> cc;
-		cc = (TableColumn<IECSocket, IECSocketStatus>) ClientList.getColumns().get(2);
-		cc.setCellValueFactory( new PropertyValueFactory<IECSocket,IECSocketStatus>("Iecstatus"));		
-	
+
 		Server.iecserver.start();
     }
     
     @FXML void stopButtonAction(ActionEvent event) {
     	System.out.println(event);
+    	if (Server.iecserver.isAlive()) {
+    		Server.iecserver.interrupt();
+    	}
     }
 
     @FXML void loadButtonAction(ActionEvent event) {
@@ -109,12 +107,22 @@ public class IECServerStageController {
     
     public void initialize() {
 //        assert pp1 == null : "fx:id=\"p1\" was not injected: check your FXML file 'IECServer.fxml'.";
-    	controllPanel.getChildren().add(0,Server.ieccombobox);
+    	ServerPortText.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0,	String arg1, String arg2) {
+				try {
+					Integer.parseInt(arg2);
+					ServerPortText.setStyle("-fx-background-color: white;");
+				} catch (Exception e) {
+					ServerPortText.setStyle("-fx-background-color: yellow;");
+				}
+			}
+        });
+		controllPanel.getChildren().add(0,Server.ieccombobox);
     	ItemPanel.getChildren().add(Server.iecPane);
     	InfoTable.setItems(versiondata);
     	initVersionData(Server.VersionProperties);
     	Server.loghandler.textArea = LogArea;
-//        ClientList.setItems(Server.iecserver.clients);
 
 		}
 

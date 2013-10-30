@@ -49,7 +49,7 @@ public class IECstage extends Stage {
 //        System.out.println("val:" + ival+"  File:"+fxml);
 //        URL url = TableDemo.class.getResource(fxml);
         URL url = IECstage.class.getResource(fxml);
-    	System.out.println("val:" + ival+"  File:"+fxml+"   URL: "+ url );
+        IECListTablePane.log.info("val:" + ival+"  File:"+fxml+"   URL: "+ url );
         
         try {
 //  		root = (Parent) loader.load(IECstage.class.getResource(fxml).openStream());
