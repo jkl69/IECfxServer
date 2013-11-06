@@ -147,7 +147,7 @@ public class IECServerFileWorker {
 		List<String> KeyList = Arrays.asList(p.getProperty("ITEM.PROPERTIES").split(";")); 
 		System.out.println(c+"ITEM PROBETIES IN FILE "+KeyList);
 		String pre = "ITEM";
-		for (int it=1;it==c;it++) {
+		for (int it=1; it <= c; it++) {
 			String[] values= p.getProperty(pre+it).split(";");
 			loadItem(KeyList,values);
 		}

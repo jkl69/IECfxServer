@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import jkl.iec.net.sockets.IECServer;
+import jkl.iec.tc.bean.type.IECTCItemWorker;
 import jkl.iec.tc.fx.gui.IECComboBox;
 import jkl.iec.tc.fx.gui.IECListTablePane;
 import jkl.iec.tc.fx.gui.IECstage;
@@ -25,11 +26,12 @@ public class Server extends Application{
 	public static Properties VersionProperties;
 	
 	static final IECServerTraceHandler loghandler =new IECServerTraceHandler();
-	static final IECListTablePane iecPane = new IECListTablePane();
+	public static final IECListTablePane iecPane = new IECListTablePane();
 	static final IECComboBox ieccombobox = new IECComboBox();
-	static final IECTCEventListener listener = new IECTCEventListener();
+	public static final IECTCEventListener listener = new IECTCEventListener();
 	static final IECServerFileWorker files= new IECServerFileWorker();
-
+	static final IECTCItemWorker itemworker = new IECTCItemWorker(iecPane.itemlist);
+	
 	static Stage stage =null;
 	static IECServer iecserver ;	
 	/**
@@ -55,11 +57,14 @@ public class Server extends Application{
 		URL url = IECstage.class.getResource("/jkl/iec/tc/fxml/IECServer.fxml");
     	log.info("URL: "+ url );
     	p = (Parent) loader.load(url.openStream());
-    	primaryStage.setScene(new Scene(p));
+    	Scene s =new Scene(p);
+    	primaryStage.setScene(s);
 //        IECServerStageController ic = loader.getController();
 //        ic.init();
 		stage = primaryStage;
-	
+		
+		s.getStylesheets().add("/jkl/iec/tc/fxml/IECscene.css");
+        
 		primaryStage.getIcons().add(new Image("/jkl/iec/tc/application/images/IEC.PNG"));
 		primaryStage.setTitle("  IEC-TestServer");
 		log.info("Server start");

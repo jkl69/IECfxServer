@@ -116,21 +116,40 @@ public class IECSimProperties  {
 		
 	}
 	
-//public class IECItemSimProperties extends Properties {
+	public class ItemProperties {
+
+	  public String BackString;
+      public IECTyp backType;
+	  public int backASDU;
+	  public int backIOB;
+	  public String itemErrorStr= "unknown";
+		
+		public Boolean isValidItem(String txt) {
+			if (txt == null) {
+				itemErrorStr ="Empty";
+				return false;
+			}
+			System.out.println("txt"+txt);
+			if (txt.isEmpty()) {
+				itemErrorStr ="Empty";
+				return false;
+			}
+			BackString =txt.replaceAll(" ","");
+
+			return false;
+		}
+	}
+
+
   public boolean enabled;
   public long NextSimTime;
-//  private String TimeString="";
-  private String BackString="";
   public TimeProperties timeproperties = new TimeProperties();
-//  int TimeInc;
-//  int TimeInc2=-1;
+  public ItemProperties itemproperties = new ItemProperties();
+
   public String SimStr;
   private double Valinc;
   @SuppressWarnings("unused")
   private double Valinc2=-1;
-  public IECTyp backType;
-  public int backASDU;
-  public int backIOB;
   public IECTCItem item;
   IECTyp old_type =null;
   public String lastErrorStr;	
@@ -142,7 +161,7 @@ public class IECSimProperties  {
 		if (IECMap.IEC_M_Type.contains(item.getIectyp())) {
 			  p.setProperty(pre+"PROPERTY",timeproperties.TimeString);
 		  } else {
-			  p.setProperty(pre+"PROPERTY",BackString);			  
+			  p.setProperty(pre+"PROPERTY",itemproperties.BackString);			  
 		  }
 		p.setProperty(pre+"VAL_INC",String.valueOf(Valinc));
 		return p;
@@ -153,7 +172,7 @@ public class IECSimProperties  {
 		if (IECMap.IEC_M_Type.contains(item.getIectyp())) {
 			  s=s+timeproperties.TimeString;
 		  } else {
-			  s=s+BackString;			  
+			  s=s+ itemproperties.BackString;			  
 		  }
 		s=s+";"+String.valueOf(Valinc);
 		return s;
@@ -170,9 +189,9 @@ public class IECSimProperties  {
 		  } else System.out.println(timeproperties.TimeErrorStr);
 	  } else {
 		  System.out.print("SET SIM_BACKSTRING: "+p.getProperty(pre+"PROPERTY","??")+" value "+Valinc);
-		  if (setBackString(p.getProperty(pre+"PROPERTY",BackString),true)) {
+		  if (itemproperties.isValidItem(p.getProperty(pre+"PROPERTY",itemproperties.BackString))) {
 			  System.out.println(" OK"); 
-		  } else System.out.println(lastErrorStr);
+		  } else System.out.println(itemproperties.itemErrorStr);
 	  }
 	  old_type= item.getIectyp();
 	}	
@@ -216,6 +235,7 @@ public class IECSimProperties  {
   public boolean isBackString(String txt) {
 	  return setBackString(txt,false);
   }
+  
   public boolean setBackString(String txt,boolean write) {
 //		String[] s =txt.split("\\\\");
 		int tmpasdu;
@@ -252,12 +272,13 @@ public class IECSimProperties  {
 				}
 				tmpiob = Integer.parseInt(s[3]);
 				if (write) {
-					backType =tmptype;
+/*					backType =tmptype;
 					backASDU =tmpasdu;
 					backIOB = tmpiob;
 					System.out.println("set back ASDU:"+backASDU+"  Type:"+backType+"  IOB:"+backIOB);
 					BackString = txt;
-				}
+	*/
+					}
 				return true;
 			} catch (NumberFormatException e) {
 
@@ -272,9 +293,10 @@ public class IECSimProperties  {
   }
  
   public String getBackString() {
+	return SimStr;
 //	  String d1 = BackString.replace("\\", "\\\\\\"); 
-      System.out.println("getbackString :"+ BackString);
-	  return BackString;
+//      System.out.println("getbackString :"+ BackString);
+//	  return BackString;
   	}  
   
   

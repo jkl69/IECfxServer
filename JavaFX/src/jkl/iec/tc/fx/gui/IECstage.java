@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import jkl.iec.tc.bean.type.IECMap;
 import jkl.iec.tc.bean.type.IECTCObject;
 import jkl.iec.tc.fx.gui.IECObjectCellFactory.IECvalueProperty;
 
@@ -95,6 +96,11 @@ public class IECstage extends Stage {
 	}
 	
 	private void getSimStageFile() {
-	      fxml = fxml +"M-SIM.fxml";
+	      if (IECMap.IEC_M_Type.contains(iob.iectyp)) {
+	    	  fxml = fxml +"M-SIM.fxml";
+	      }
+	      if (IECMap.IEC_C_Type.contains(iob.iectyp)) {
+	    	  fxml = fxml +"C-SIM.fxml";
+	      }
 		}	
 }

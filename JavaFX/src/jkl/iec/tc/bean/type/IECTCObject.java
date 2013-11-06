@@ -89,6 +89,8 @@ public class IECTCObject implements Cloneable {
 	public Date Time_RX;
 	public Date Time_TX;
 
+	int QOC;
+
 	public IECTCObject(IECTCItem s) {
 /*		buf[0]=  IOB1  buf[1]= IOB2   buf[2]= IOB3
 		buf[3] = Val1	buf[4]= Val2   buf[5]= Val3	 buf[6]= Val4
@@ -389,6 +391,16 @@ public class IECTCObject implements Cloneable {
 		return getIOBLength()+3;
 	}
 	
+	public boolean isShortPuls() {
+		return (QOC == 1);
+	}
+	public boolean isLongPuls() {
+		return (QOC == 2);
+	}
+	public boolean isPersistent() {
+		return (QOC == 3);
+	}
+	
 	private boolean isTimeType(){
 		switch(iectyp) {
 		case M_SP_TB : case M_DP_TB :
@@ -479,6 +491,8 @@ public class IECTCObject implements Cloneable {
 		}
 		case C_SC_NA : {
 			setQU((byte) (buf[index]& ((byte) 0xfe))) ;
+			QOC = getQU() >>> 2;
+//			log.severe("QUC: "+String.valueOf(QOC));
 			break;
 		}
 		case M_DP_NA : case M_DP_TB : {
@@ -487,6 +501,7 @@ public class IECTCObject implements Cloneable {
 		}	
 		case C_DC_NA : {
 			setQU((byte) (buf[index]& ((byte) 0xfc))) ;
+			QOC = getQU() >>> 2;
 			break;
 		}	
 		case M_ME_NA: case M_ME_TB : case M_ME_NB : case M_ME_TD :  {

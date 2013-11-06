@@ -205,6 +205,7 @@ public class IECTCItem {
 		if (getIectyp() != IECTyp.IEC_NULL_TYPE) {
 			o.readaddr();
 			o.readValue();
+			o.readQU();
 			o.readTime();
 	        crcLength(length);
 	    }

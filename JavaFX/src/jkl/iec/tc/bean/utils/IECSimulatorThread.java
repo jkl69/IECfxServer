@@ -63,9 +63,9 @@ public class IECSimulatorThread implements Runnable {
     private void sim_C_Item(IECTCItem item) {
 //   		    	System.out.println("time"+item.iob(0).getTime()+"  time_RX"+item.iob(0).Time_RX);	
    	   	if (item.getIOB(0).getTime() != item.getIOB(0).Time_RX) {   //
-   	    	String tr = "Simul  reaction trigger "+item.getName()+" Search item Type:"+simprop.backType+"  asdu:"+simprop.backASDU+" IOB:"+simprop.backIOB;
-//	    	IECTCItem simitem =ieclist.getIECStream(simprop.backType,simprop.backASDU,simprop.backIOB);
-	    	IECTCItem simitem = null;
+   	    	String tr = "Simul  reaction trigger "+item.getName()+" Search item Type:"+simprop.itemproperties.backType+
+   	    			"  asdu:"+simprop.itemproperties.backASDU+" IOB:"+simprop.itemproperties.backIOB;
+	    	IECTCItem simitem =ieclist.getIECItem(simprop.itemproperties.backType,simprop.itemproperties.backASDU,simprop.itemproperties.backIOB);
    	    	if (simitem != null) {
    		    	tr = tr+" --> OK";
    	    		if (simprop.getValinc()==0) {
