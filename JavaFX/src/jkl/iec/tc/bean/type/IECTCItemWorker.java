@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 
 import javafx.application.Platform;
 
-import jkl.iec.tc.application.Server;
 import jkl.iec.tc.bean.type.IECMap.IECTyp;
 
 public class IECTCItemWorker {
@@ -14,6 +13,7 @@ public class IECTCItemWorker {
 	public final static Logger log = Logger.getLogger(IECTCItemWorker.class .getName());
 	
 	private IECItemList itemlist = null;
+	private IIECTCStreamListener listener;
 	
 	class updateItem implements Runnable{
 		private IECTCItem updateitem;
@@ -28,7 +28,7 @@ public class IECTCItemWorker {
 		
 		@Override
 		public void run() {
-			log.warning("");
+			log.info(String.valueOf(method));
 			if (method == 0 ){
 				updateitem.getObject0().setVal(sourceitem.getObject0().getVal());
 			}
@@ -43,9 +43,15 @@ public class IECTCItemWorker {
 		
 	}
 	
-	
 	public IECTCItemWorker (IECItemList l) {
 		this.itemlist = l;
+	}
+	
+	public void doStream (IECTCItem i) {
+		if (listener != null) {
+			byte[] buf = i.getStream();
+			listener.doStream(buf, buf.length);
+		}
 	}
 	
 	public void process(IECTCItem item) {
@@ -53,37 +59,35 @@ public class IECTCItemWorker {
 			return;
 			}
 		
+    	IECTCItem listitem = itemlist.getIECItem(item.getIectyp(),item.getASDU(),item.getObject0().getaddr());
+
     	if (item.getIectyp() == IECTyp.C_IC_NA) {
-        	IECTCItem listitem = itemlist.getIECItem(item.getIectyp(),item.getASDU(),item.getObject0().getaddr());
-    		if (listitem == null) {
-    			Platform.runLater(new updateItem(listitem ,2, item));
+    		if (listitem != null) {
+    			Platform.runLater(new updateItem(listitem ,0, item));
     		}
 			doIC(item);
 			return;
 		}
     	
-    	IECTCItem listitem = itemlist.getIECItem(item.getIectyp(),item.getASDU(),item.getObject0().getaddr());
-		if (listitem == null) {
-			log.warning("ITEM NOT IN LIST --> nactcon");
-			item.setCOT(0x47);
-			Server.listener.doStream(item);
-			return;
- 			}
-		
-    	
     	if (item.getIectyp() == IECTyp.C_SC_NA) {
+    		if (listitem == null) {
+    			log.warning("ITEM NOT IN LIST --> nactcon");
+    			item.setCOT(0x47);
+    			doStream(item);
+    			return;
+     			}
     		processCommand(item ,listitem );
 		}		
 		
 	}
 	
 	public void processCommand(IECTCItem item, IECTCItem listitem ) {
-        Platform.runLater(new updateItem(listitem ,2, item));
+        Platform.runLater(new updateItem(listitem ,0, item));
 		item.setCOT(0x07);
-		Server.listener.doStream(item);
+		doStream(item);
 		if (item.getObject0().isPersistent()) {return; }
 		
- 		log.info("PULS QOC: "+String.valueOf(item.getObject0().QOC));
+ 		log.finer("_QOC: "+String.valueOf(item.getObject0().QOC));
 		long t=100000;
 		if (item.getObject0().isShortPuls()) {
 		 t=5000;	
@@ -94,7 +98,7 @@ public class IECTCItemWorker {
 			e.printStackTrace();
 		}
 		item.setCOT(0x0A);
-		Server.listener.doStream(item);		
+		doStream(item);		
 	}
     
     private void doICType(IECTCItem i,Set<IECTyp> set) {
@@ -118,15 +122,14 @@ public class IECTCItemWorker {
 		log.fine("Items in GS answer "+String.valueOf(hit)); 
 		//send only if items in stream (hit >0)
 		if (hit >0 ) {
-			Server.listener.doStream(i);	
+			doStream(i);	
 		}
     }
     
 	private void doIC(IECTCItem gs) {
 //System.out.println("General Scan started!"); 
     	gs.setCOT(0x07);
-		Server.listener.doStream(gs);	
-    	
+		doStream(gs);	    	
     	Set<IECTyp> set;
 		IECTCItem i= new IECTCItem();
 	    i.setCOT((int) gs.getIOB(0).getVal());
@@ -163,8 +166,17 @@ public class IECTCItemWorker {
 		
 		gs.setCOT(10);
     	log.fine("General Scan regular end!");
-    	Server.listener.doStream(gs);	
+    	
+    	doStream(gs);	
 		
     }
+
+	public IIECTCStreamListener getListener() {
+		return listener;
+	}
+
+	public void setListener(IIECTCStreamListener listener) {
+		this.listener = listener;
+	}
     
 }

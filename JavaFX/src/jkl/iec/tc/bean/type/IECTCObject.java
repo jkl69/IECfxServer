@@ -321,23 +321,28 @@ public class IECTCObject implements Cloneable {
 		setVal(result);
 	}
 	 
-
+/**
+ *  Sets new Value
+ * @param v = Value to set
+ * @return true if value has changed ; false if Value has NOT changed
+ */
 	public boolean setVal(double v) {
+    	boolean result=true;
     	if (v > MAX_VALUE) {
 			v = MAX_VALUE;
 		}
 		if (v < MIN_VALUE) {
-			System.out.println(v+"< MinValue : "+MIN_VALUE);
+//			System.out.println(v+"< MinValue : "+MIN_VALUE);
 			v = MIN_VALUE;
 		}
-		if (v != getVal()) {
-//			Val = v;
-			Val.set(v);
-			log.finer(String.valueOf(v));
-			setTime( new Date());
-			return true;
+		if (v == getVal()) {
+			result=false;
 		}
-		return false;
+		Val.set(v);
+		log.fine(String.valueOf(v));
+		setTime( new Date());
+
+		return result;
 	}
 	
 	private int getTimeLength(){

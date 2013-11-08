@@ -24,7 +24,7 @@
         </HBox>
         <HBox alignment="CENTER_LEFT" prefHeight="-1.0" prefWidth="200.0" spacing="10.0">
           <children>
-            <Label id="timeLabel" fx:id="itemabel" styleClass="errorlabel" text="Label" />
+            <Label id="timeLabel" fx:id="itemabel" styleClass="errorlabel" text="" />
           </children>
           <padding>
             <Insets left="10.0" />

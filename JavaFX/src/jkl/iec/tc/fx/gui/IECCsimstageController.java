@@ -17,7 +17,8 @@ public class IECCsimstageController extends IECstageController {
 	
 	@Override
 	void saveStage() {
-		sim.timeproperties.isValidTime(itemText.getText());
+		sim.itemproperties.isValidItem(itemText.getText());
+		System.out.println("set Valinc " +Integer.parseInt(changeValueText.getText()));
 		sim.setValinc(Integer.parseInt(changeValueText.getText()));
 		closeStage();
 	}
@@ -25,6 +26,10 @@ public class IECCsimstageController extends IECstageController {
 	@Override
 	void loadStage() {
 		sim = (IECSimProperties) iob.item.data;
+		System.out.println("load backstring:"+ sim.itemproperties.BackString);
+		itemText.setText(sim.getBackString());
+		changeValueText.setText( String.valueOf((int) sim.getValinc()) );
+
 		itemText.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> arg0,	String arg1, String newtxt) {
@@ -32,11 +37,9 @@ public class IECCsimstageController extends IECstageController {
 				if (sim.itemproperties.isValidItem(newtxt)) {
 					itemText.setStyle("-fx-background-color: white;");
 					itemabel.setText("");
-//			    	timeLabel.setVisible(true);
 				} else {
 					itemText.setStyle("-fx-background-color: yellow;");
 					itemabel.setText(sim.itemproperties.itemErrorStr);
-//			    	timeLabel.setVisible(true);
 				}
 			}
         });
@@ -52,9 +55,6 @@ public class IECCsimstageController extends IECstageController {
 				}
 			}
         });
-		
-		itemText.setText(sim.getBackString());
-		changeValueText.setText( String.valueOf((int) sim.getValinc()) );
 	}
 	
 }

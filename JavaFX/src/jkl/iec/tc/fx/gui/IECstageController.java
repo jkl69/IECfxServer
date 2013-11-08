@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 import jkl.iec.tc.bean.type.IECTCObject;
 
 
-abstract  class IECstageController {
+public abstract  class IECstageController {
 	
 	@FXML protected Pane rootPane;
 	

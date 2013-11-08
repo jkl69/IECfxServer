@@ -241,7 +241,7 @@ public class IECTCItem {
 	}
 
 	public void addIOB() {
-		 IECTCObject item = new IECTCObject(this,iob++);
+		 IECTCObject item = new IECTCObject(this,0);
 		 addIOB(item);
 	 }
 
@@ -351,15 +351,7 @@ public class IECTCItem {
     	Stream[2] =	(byte) (cot % 256);
 		Stream[3] = (byte) (cot / 256);	
 	}
-	/*
-	public int getoCOT() {
-		if (P_SHORT) {
-			return  (Stream[2] & 0xFF);       	
-		} else {
-			return  ((Stream[3] & 0xFF) << 8) | (Stream[2] & 0xFF);   	
-		}
-	}
-	*/
+
 	public void setASDU(int asdu) {
     	if (asdu > 65535) {
 			asdu = 65535;

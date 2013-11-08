@@ -47,6 +47,7 @@ public class Server extends Application{
 		iecPane.itemlist.setIECTCStreamListener(listener);
     	log.addHandler(loghandler);
 		IECServer.log.setLevel(Level.INFO);
+		itemworker.setListener(listener);
 	}
 	
 	@Override

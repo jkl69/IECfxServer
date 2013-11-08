@@ -16,13 +16,17 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
@@ -168,8 +172,29 @@ public class IECServerStageController {
 		}
     }
     
+    final MenuItem resizeItem = new MenuItem("Resize");
+    final MenuItem M2 = new MenuItem("M2");
+    final ContextMenu menu = new ContextMenu(
+      resizeItem,M2
+    );
+    
     public void initialize() {
-//        assert pp1 == null : "fx:id=\"p1\" was not injected: check your FXML file 'IECServer.fxml'.";
+
+        resizeItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent event) {
+              System.out.println("Resize requested");
+              
+            }
+          });
+        ClientList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent event) {
+              if (MouseButton.SECONDARY.equals(event.getButton())) {
+                menu.show(Server.stage, event.getScreenX(), event.getScreenY());
+              }  
+            }
+          });
+        
+     //        assert pp1 == null : "fx:id=\"p1\" was not injected: check your FXML file 'IECServer.fxml'.";
     	System.out.println("STYLE"+ServerPortText.getStyle());
     	ServerPortText.textProperty().addListener(new ChangeListener<String>() {
 			@Override
