@@ -7,44 +7,55 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<BorderPane id="BorderPane" fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#handleOnKeyPressed" prefHeight="273.0" prefWidth="204.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="jkl.iec.net.sockets.IECSocketstageController">
+<BorderPane id="BorderPane" fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#handleOnKeyPressed" prefHeight="273.0" prefWidth="204.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="jkl.iec.net.fx.gui.IECSocketStageController">
   <center>
-    <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+    <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="8.0">
       <children>
         <Label alignment="CENTER" text="Label" />
         <HBox alignment="CENTER" prefHeight="-1.0" prefWidth="-1.0" spacing="10.0">
           <children>
-            <Label text="Label" />
+            <Label text="T0" />
+            <TextField prefWidth="80.0">
+              <tooltip>
+                <Tooltip text="Empty Tooltip" />
+              </tooltip>
+            </TextField>
+          </children>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="-1.0" prefWidth="-1.0" spacing="10.0">
+          <children>
+            <Label text="T1" />
+            <TextField prefWidth="80.0">
+              <tooltip>
+                <Tooltip text="The Socket expect an acknwolage for transmited data after this Time" />
+              </tooltip>
+            </TextField>
+          </children>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="-1.0" prefWidth="-1.0" spacing="10.0">
+          <children>
+            <Label text="T2" />
             <TextField prefWidth="80.0" />
           </children>
         </HBox>
         <HBox alignment="CENTER" prefHeight="-1.0" prefWidth="-1.0" spacing="10.0">
           <children>
-            <Label text="Label" />
+            <Label text="T3" />
+            <TextField prefWidth="80.0" />
+          </children>
+          <padding>
+            <Insets bottom="22.0" />
+          </padding>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="-1.0" prefWidth="-1.0" spacing="10.0">
+          <children>
+            <Label text="w" />
             <TextField prefWidth="80.0" />
           </children>
         </HBox>
         <HBox alignment="CENTER" prefHeight="-1.0" prefWidth="-1.0" spacing="10.0">
           <children>
-            <Label text="Label" />
-            <TextField prefWidth="80.0" />
-          </children>
-        </HBox>
-        <HBox alignment="CENTER" prefHeight="-1.0" prefWidth="-1.0" spacing="10.0">
-          <children>
-            <Label text="Label" />
-            <TextField prefWidth="80.0" />
-          </children>
-        </HBox>
-        <HBox alignment="CENTER" prefHeight="-1.0" prefWidth="-1.0" spacing="10.0">
-          <children>
-            <Label text="Label" />
-            <TextField prefWidth="80.0" />
-          </children>
-        </HBox>
-        <HBox alignment="CENTER" prefHeight="-1.0" prefWidth="-1.0" spacing="10.0">
-          <children>
-            <Label text="Label" />
+            <Label text="k" />
             <TextField prefWidth="80.0" />
           </children>
         </HBox>

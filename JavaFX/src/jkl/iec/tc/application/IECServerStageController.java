@@ -30,6 +30,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
+import jkl.iec.net.fx.gui.IECSocketstage;
 import jkl.iec.net.sockets.IECServer;
 import jkl.iec.net.sockets.IECSocket;
 import jkl.iec.net.sockets.IECSocket.IECSocketStatus;
@@ -183,7 +184,8 @@ public class IECServerStageController {
         resizeItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
               System.out.println("Resize requested");
-              
+              IECSocketstage sockDlg = new IECSocketstage();
+              sockDlg.show();
             }
           });
         ClientList.setOnMouseClicked(new EventHandler<MouseEvent>() {
