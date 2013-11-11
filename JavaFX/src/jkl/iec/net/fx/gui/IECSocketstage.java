@@ -9,18 +9,17 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import jkl.iec.tc.bean.type.IECTCObject;
-import jkl.iec.tc.fx.gui.IECObjectCellFactory.IECvalueProperty;
+import jkl.iec.net.sockets.IECSocketParameter;
 
 public class IECSocketstage extends Stage {
-	IECTCObject iob;
-	IECvalueProperty iecp;
+	
+	IECSocketParameter p;
     
 	Parent root = null;
     final FXMLLoader loader = new FXMLLoader();
     final String fxml = "/jkl/iec/net/fxml/IECSocketDlg.fxml";
     
-	public IECSocketstage() {
+	public IECSocketstage(String n, IECSocketParameter p) {
 //        scene.getStylesheets().add(urlstyle);
         URL url = IECSocketstage.class.getResource(fxml);
         
@@ -34,6 +33,9 @@ public class IECSocketstage extends Stage {
         initModality(Modality.APPLICATION_MODAL);
         initStyle(StageStyle.UNDECORATED); 
         setResizable(false);
+        
+        IECSocketStageController ic = loader.getController();
+        ic.init(n,p);
         
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/jkl/iec/tc/fxml/IECscene.css");

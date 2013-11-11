@@ -27,7 +27,7 @@
         <Button mnemonicParsing="false" onAction="#loadButtonAction" text="Load" />
       </children>
       <padding>
-        <Insets left="10.0" />
+        <Insets left="10.0" fx:id="x1" />
       </padding>
     </HBox>
     <SplitPane dividerPositions="0.5" focusTraversable="true" orientation="VERTICAL" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
@@ -61,6 +61,29 @@
                     </TableColumn>
                   </columns>
                 </TableView>
+              </content>
+            </Tab>
+            <Tab text="Options">
+              <content>
+                <HBox alignment="CENTER" padding="$x1" prefHeight="-1.0" prefWidth="-1.0" spacing="10.0">
+                  <children>
+                    <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                      <children>
+                        <RadioButton mnemonicParsing="false" text="SEVERE">
+                          <toggleGroup>
+                            <ToggleGroup fx:id="logging" />
+                          </toggleGroup>
+                        </RadioButton>
+                        <RadioButton mnemonicParsing="false" text="INFO" toggleGroup="$logging" />
+                        <RadioButton mnemonicParsing="false" text="FINE" toggleGroup="$logging" />
+                      </children>
+                      <padding>
+                        <Insets left="10.0" fx:id="x1" />
+                      </padding>
+                    </VBox>
+                    <Button mnemonicParsing="false" onAction="#SockParamButton" text="SocketParameter" />
+                  </children>
+                </HBox>
               </content>
             </Tab>
             <Tab text="About">

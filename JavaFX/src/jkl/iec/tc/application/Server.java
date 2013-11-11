@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import jkl.iec.net.sockets.IECServer;
+import jkl.iec.net.sockets.IECSocketParameter;
 import jkl.iec.tc.bean.type.IECTCItemWorker;
 import jkl.iec.tc.fx.gui.IECComboBox;
 import jkl.iec.tc.fx.gui.IECListTablePane;
@@ -32,6 +33,8 @@ public class Server extends Application{
 	static final IECServerFileWorker files= new IECServerFileWorker();
 	static final IECTCItemWorker itemworker = new IECTCItemWorker(iecPane.itemlist);
 	
+	public static IECSocketParameter SocketParameter = new IECSocketParameter(); 
+	
 	static Stage stage =null;
 	static IECServer iecserver ;	
 	/**
@@ -47,6 +50,7 @@ public class Server extends Application{
 		iecPane.itemlist.setIECTCStreamListener(listener);
     	log.addHandler(loghandler);
 		IECServer.log.setLevel(Level.INFO);
+		IECServer.iecSocketParameter = SocketParameter;
 		itemworker.setListener(listener);
 	}
 	

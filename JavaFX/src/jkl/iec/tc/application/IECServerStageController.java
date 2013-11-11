@@ -163,7 +163,12 @@ public class IECServerStageController {
     @FXML void saveButtonAction(ActionEvent event) {
     	Server.files.save();
     }
-
+    
+    @FXML void SockParamButton(ActionEvent event) {
+        IECSocketstage sockDlg = new IECSocketstage("DEFAULT",Server.SocketParameter);
+        sockDlg.show();    	
+    }
+    
     private void initVersionData(Properties p) {
 		Enumeration<?> it = p.propertyNames();
 		String key;
@@ -173,25 +178,14 @@ public class IECServerStageController {
 		}
     }
     
-    final MenuItem resizeItem = new MenuItem("Resize");
-    final MenuItem M2 = new MenuItem("M2");
-    final ContextMenu menu = new ContextMenu(
-      resizeItem,M2
-    );
+    IECServerContextMenu m = new IECServerContextMenu();
     
     public void initialize() {
 
-        resizeItem.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent event) {
-              System.out.println("Resize requested");
-              IECSocketstage sockDlg = new IECSocketstage();
-              sockDlg.show();
-            }
-          });
         ClientList.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override public void handle(MouseEvent event) {
               if (MouseButton.SECONDARY.equals(event.getButton())) {
-                menu.show(Server.stage, event.getScreenX(), event.getScreenY());
+                m.show(Server.stage, event.getScreenX(), event.getScreenY());
               }  
             }
           });
